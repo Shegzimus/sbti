@@ -118,7 +118,7 @@ with DAG(
 
 
 
-    # Task to create a BigQuery table in the staging dataset for the deals data
+    # Task to create a BigQuery table in the warehouse dataset for the deals data
     create_deals_load_table = BigQueryCreateEmptyTableOperator(
         task_id='create_deals_load_table',
         dataset_id=f'{PROJECT_ID}.{BQ_WAREHOUSE_DATASET}.deals',
@@ -171,7 +171,7 @@ with DAG(
                 {"name": "fc_widget_collaboration_encoded_jwt_token", "type": "STRING", "mode": "NULLABLE"}],
     )
 
-    # Task to create a BigQuery table in the staging dataset for the accounts data
+    # Task to create a BigQuery table in the warehouse dataset for the accounts data
     create_accounts_load_table = BigQueryCreateEmptyTableOperator(
         task_id='create_accounts_load_table',
         dataset_id=f'{PROJECT_ID}.{BQ_WAREHOUSE_DATASET}.accounts',
@@ -228,7 +228,7 @@ with DAG(
                 {"name": "custom_field_cf_region", "type": "STRING", "mode": "NULLABLE"}],
     )   
 
-    # Task to create a BigQuery table in the staging dataset for the contacts data
+    # Task to create a BigQuery table in the warehouse dataset for the contacts data
     create_contacts_load_table = BigQueryCreateEmptyTableOperator(
         task_id='create_contacts_load_table',
         dataset_id=f'{PROJECT_ID}.{BQ_WAREHOUSE_DATASET}.contacts',    
@@ -319,7 +319,7 @@ with DAG(
     #### PUSH TO WAREHOUSE
     """
     push_deals_to_DWH = BigQueryToBigQueryOperator(
-        source_project_dataset_tables= '',
+        source_project_dataset_tables= f'{PROJECT_ID}.{BQ_STAGING_DATASET}.deals_staging',
         destination_project_dataset_table= f'{PROJECT_ID}.{BQ_WAREHOUSE_DATASET}.deals',
         write_disposition= 'WRITE_EMPTY',
 
@@ -328,7 +328,7 @@ with DAG(
     )
 
     push_contacts_to_DWH = BigQueryToBigQueryOperator(
-        source_project_dataset_tables= '',
+        source_project_dataset_tables= f'{PROJECT_ID}.{BQ_STAGING_DATASET}.contacts_staging',
         destination_project_dataset_table= f'{PROJECT_ID}.{BQ_WAREHOUSE_DATASET}.contacts',
         write_disposition= 'WRITE_EMPTY',
 
@@ -336,7 +336,7 @@ with DAG(
     )
 
     push_accounts_to_DWH = BigQueryToBigQueryOperator(
-        source_project_dataset_tables= '',
+        source_project_dataset_tables= f'{PROJECT_ID}.{BQ_STAGING_DATASET}.accounts_staging',
         destination_project_dataset_table= f'{PROJECT_ID}.{BQ_WAREHOUSE_DATASET}.accounts',
         write_disposition= 'WRITE_EMPTY' ,
     )
