@@ -316,7 +316,7 @@ with DAG(
     )
 
     """
-    #### PUSH TO WAREHOUSE
+    #### PUSH FROM THE STAGING LAYER TO THE WAREHOUSE
     """
     push_deals_to_DWH = BigQueryToBigQueryOperator(
         source_project_dataset_tables= f'{PROJECT_ID}.{BQ_STAGING_DATASET}.deals_staging',
@@ -343,7 +343,7 @@ with DAG(
 
 
     """
-    #### PUSH TO FRESHWORKS
+    #### PUSH TO FRESHWORKS CRM
     """
     update_API_task = PythonOperator(
         task_id='update_API_task',
