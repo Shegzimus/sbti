@@ -853,7 +853,7 @@ with DAG(
     begin = DummyOperator(task_id="begin")
     end = DummyOperator(task_id="end")
 
-
+    # Define Task Dependencies
     begin >> [parse_deals_csv, parse_contacts_csv, parse_accounts_csv]
 
     parse_accounts_csv >> accounts_clean_task >> accounts_schema_change >> accounts_parquet_upload >> create_accounts_staging_table >> transfer_sales_to_bigquery
@@ -863,3 +863,5 @@ with DAG(
     parse_deals_csv >> deals_clean_task >> deals_schema_change >> deals_parquet_upload >> create_deals_staging_table >> transfer_deals_to_bigquery
 
     [transfer_sales_to_bigquery, transfer_contacts_to_bigquery, transfer_deals_to_bigquery ] >> daily_aggregations_per_account >> list_contacts_per_account >> end
+
+
